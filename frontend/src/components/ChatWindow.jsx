@@ -32,7 +32,7 @@ export default function ChatWindow({ mode, clientId, accentVar, placeholder, dis
     try {
       const result = await sendMessage({ sessionId, message: text, mode, clientId });
       setSessionId(result.session_id);
-      setMessages((prev) => [...prev, { role: "assistant", text: result.reply }]);
+      setMessages((prev) => [...prev, { role: "RAFT", text: result.reply }]);
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -59,7 +59,7 @@ export default function ChatWindow({ mode, clientId, accentVar, placeholder, dis
         {messages.map((m, i) => (
           <div key={i} className={`chat-entry chat-entry--${m.role}`}>
             <div className="chat-entry__label" style={{ color: `var(${accentVar})` }}>
-              {m.role === "user" ? "You" : "Assistant"}
+              {m.role === "user" ? "You" : "RAFT"}
             </div>
             <div className="chat-entry__text">{m.text}</div>
           </div>
@@ -67,7 +67,7 @@ export default function ChatWindow({ mode, clientId, accentVar, placeholder, dis
 
         {loading && (
           <div className="chat-entry chat-entry--assistant">
-            <div className="chat-entry__label" style={{ color: `var(${accentVar})` }}>Assistant</div>
+            <div className="chat-entry__label" style={{ color: `var(${accentVar})` }}>RAFT</div>
             <div className="chat-entry__text chat-entry__text--pending">Working it out&hellip;</div>
           </div>
         )}

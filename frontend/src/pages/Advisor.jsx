@@ -11,6 +11,7 @@ export default function Advisor() {
       <header className="app-header">
         <Link to="/" className="app-header__mark">LEDGER</Link>
         <div className="app-header__title">For clients</div>
+        <div className="app-header__powered-by">RAFT, powered by Claude</div>
       </header>
 
       <div className="app-body app-body--split">

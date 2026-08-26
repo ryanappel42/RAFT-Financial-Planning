@@ -13,6 +13,14 @@
   border-bottom: 1px solid var(--rule);
 }
 
+.app-header__powered-by {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  color: var(--charcoal-dim);
+}
+
 .app-header__mark {
   font-family: var(--font-mono);
   font-size: 0.7rem;
