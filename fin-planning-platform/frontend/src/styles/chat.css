@@ -1,0 +1,113 @@
+.chat-window {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.chat-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-3);
+}
+
+.chat-empty {
+  color: var(--charcoal-dim);
+  font-size: 0.9rem;
+  font-style: italic;
+  padding: var(--space-3) 0;
+}
+
+.chat-entry {
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.chat-entry:last-child {
+  border-bottom: none;
+}
+
+.chat-entry__label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+.chat-entry__text {
+  font-size: 0.98rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  color: var(--charcoal);
+}
+
+.chat-entry__text--pending {
+  color: var(--charcoal-dim);
+  font-style: italic;
+}
+
+.chat-error {
+  color: #A23B3B;
+  font-size: 0.85rem;
+  padding: var(--space-1) 0;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border-top: 1px solid var(--rule);
+}
+
+.chat-input {
+  flex: 1;
+  resize: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: #fff;
+  color: var(--charcoal);
+  min-height: 2.6rem;
+  max-height: 8rem;
+}
+
+.chat-input:focus {
+  outline: 2px solid var(--emerald);
+  outline-offset: 1px;
+}
+
+.chat-input:disabled {
+  background: var(--bone-dim);
+  color: var(--charcoal-dim);
+}
+
+.chat-send {
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0 var(--space-2);
+  transition: opacity 0.15s ease;
+}
+
+.chat-send:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.chat-send:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+.chat-send:focus-visible,
+.chat-input:focus-visible,
+.entry-card:focus-visible,
+.client-picker__item:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: 2px;
+}
