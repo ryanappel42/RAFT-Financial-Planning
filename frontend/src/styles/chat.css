@@ -39,8 +39,60 @@
 .chat-entry__text {
   font-size: 0.98rem;
   line-height: 1.55;
-  white-space: pre-wrap;
   color: var(--charcoal);
+}
+
+.chat-entry--user .chat-entry__text {
+  white-space: pre-wrap;
+}
+
+.chat-entry__text p {
+  margin: 0 0 0.6em 0;
+}
+
+.chat-entry__text p:last-child {
+  margin-bottom: 0;
+}
+
+.chat-entry__text strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.chat-entry__text ul,
+.chat-entry__text ol {
+  margin: 0.3em 0 0.6em 0;
+  padding-left: 1.3em;
+}
+
+.chat-entry__text li {
+  margin-bottom: 0.25em;
+}
+
+.chat-entry__text li::marker {
+  color: var(--charcoal-dim);
+}
+
+.chat-entry__text code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--bone-dim);
+  padding: 0.1em 0.35em;
+  border-radius: 2px;
+}
+
+.chat-entry__text h1,
+.chat-entry__text h2,
+.chat-entry__text h3 {
+  font-size: 1rem;
+  font-family: var(--font-display);
+  margin: 0.6em 0 0.3em 0;
+}
+
+.chat-entry__text hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 0.7em 0;
 }
 
 .chat-entry__text--pending {

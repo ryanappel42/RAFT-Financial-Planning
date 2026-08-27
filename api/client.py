@@ -1,5 +1,5 @@
 """
-API client for the retirement readiness assistant.
+API client for RAFT, the retirement planning assistant.
 
 Runs the tool-use loop: send user message + tool definitions to Claude,
 execute any tool calls Claude makes against the real calculation engine,
@@ -162,15 +162,18 @@ def execute_tool_call(tool_name: str, tool_input: dict) -> dict:
     raise ValueError(f"Unknown tool: {tool_name}")
 
 
-def chat(messages: list, mode: str = "consumer", client_context: str | None = None) -> list:
+def chat(messages: list, mode: str = "consumer", client_context: str | None = None) -> tuple:
     """
     Runs one full turn of the tool-use loop given a message history.
     mode: "consumer" or "advisor". client_context: plain-text summary of the
     client's accounts/situation, only used in advisor mode.
-    Returns the updated message history including Claude's response(s).
+    Returns (updated_messages, tool_calls), where tool_calls is a list of
+    {"tool_name": str, "result": dict} for every tool call made this turn,
+    in order, so the caller can render structured visuals alongside the text.
     """
     client = anthropic.Anthropic()
     system_prompt = build_system_prompt(mode=mode, client_context=client_context)
+    tool_calls_this_turn = []
 
     while True:
         response = client.messages.create(
@@ -190,6 +193,7 @@ def chat(messages: list, mode: str = "consumer", client_context: str | None = No
         for block in response.content:
             if block.type == "tool_use":
                 result = execute_tool_call(block.name, block.input)
+                tool_calls_this_turn.append({"tool_name": block.name, "result": result})
                 tool_results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
@@ -198,4 +202,5 @@ def chat(messages: list, mode: str = "consumer", client_context: str | None = No
 
         messages.append({"role": "user", "content": tool_results})
 
-    return messages
+    return messages, tool_calls_this_turn
+

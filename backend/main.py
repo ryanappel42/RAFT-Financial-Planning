@@ -55,6 +55,7 @@ class ChatRequest(BaseModel):
 class ChatResponse(BaseModel):
     session_id: str
     reply: str
+    tool_calls: list = []  # [{"tool_name": str, "result": dict}, ...] for this turn, used to render visuals
 
 
 def _extract_text(content) -> str:
@@ -88,7 +89,7 @@ def post_chat(req: ChatRequest, x_access_code: str | None = Header(default=None)
     client_context = get_client_context(req.client_id) if req.mode == "advisor" else None
 
     try:
-        updated_messages = chat(messages, mode=req.mode, client_context=client_context)
+        updated_messages, tool_calls = chat(messages, mode=req.mode, client_context=client_context)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error calling Claude: {e}")
 
@@ -99,4 +100,4 @@ def post_chat(req: ChatRequest, x_access_code: str | None = Header(default=None)
     )
     reply = _extract_text(last_assistant_message["content"]) if last_assistant_message else ""
 
-    return ChatResponse(session_id=session_id, reply=reply)
+    return ChatResponse(session_id=session_id, reply=reply, tool_calls=tool_calls)

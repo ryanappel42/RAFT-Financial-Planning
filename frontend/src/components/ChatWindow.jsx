@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import { sendMessage } from "../api";
+import ToolResultRenderer from "./results/ToolResultRenderer";
 
 export default function ChatWindow({ mode, clientId, accentVar, placeholder, disabled }) {
   const [messages, setMessages] = useState([]); // { role, text }
@@ -32,7 +34,7 @@ export default function ChatWindow({ mode, clientId, accentVar, placeholder, dis
     try {
       const result = await sendMessage({ sessionId, message: text, mode, clientId });
       setSessionId(result.session_id);
-      setMessages((prev) => [...prev, { role: "RAFT", text: result.reply }]);
+      setMessages((prev) => [...prev, { role: "assistant", text: result.reply, toolCalls: result.tool_calls }]);
     } catch (err) {
       setError(err.message || "Something went wrong. Please try again.");
     } finally {
@@ -61,7 +63,16 @@ export default function ChatWindow({ mode, clientId, accentVar, placeholder, dis
             <div className="chat-entry__label" style={{ color: `var(${accentVar})` }}>
               {m.role === "user" ? "You" : "RAFT"}
             </div>
-            <div className="chat-entry__text">{m.text}</div>
+            <div className="chat-entry__text">
+              {m.role === "assistant" ? (
+                <ReactMarkdown>{m.text}</ReactMarkdown>
+              ) : (
+                m.text
+              )}
+            </div>
+            {m.role === "assistant" && m.toolCalls && m.toolCalls.length > 0 && (
+              <ToolResultRenderer toolCalls={m.toolCalls} accentVar={accentVar} />
+            )}
           </div>
         ))}
 

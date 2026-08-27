@@ -24,7 +24,7 @@ export async function sendMessage({ sessionId, message, mode, clientId }) {
     throw new Error(body.detail || `Request failed (${res.status})`);
   }
 
-  return res.json(); // { session_id, reply }
+  return res.json(); // { session_id, reply, tool_calls }
 }
 
 export async function fetchClients() {
