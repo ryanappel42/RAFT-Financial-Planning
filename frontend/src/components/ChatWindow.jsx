@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { sendMessage } from "../api";
 import ToolResultRenderer from "./results/ToolResultRenderer";
 
@@ -65,7 +66,18 @@ export default function ChatWindow({ mode, clientId, accentVar, placeholder, dis
             </div>
             <div className="chat-entry__text">
               {m.role === "assistant" ? (
-                <ReactMarkdown>{m.text}</ReactMarkdown>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    table: ({ node, ...props }) => (
+                      <div className="chat-table-scroll">
+                        <table {...props} />
+                      </div>
+                    ),
+                  }}
+                >
+                  {m.text}
+                </ReactMarkdown>
               ) : (
                 m.text
               )}
