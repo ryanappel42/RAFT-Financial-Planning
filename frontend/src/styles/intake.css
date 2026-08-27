@@ -1,0 +1,126 @@
+.intake-wrap {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-4) var(--space-3);
+  overflow-y: auto;
+}
+
+.intake-form {
+  width: 100%;
+  max-width: 560px;
+}
+
+.intake-form__header {
+  margin-bottom: var(--space-3);
+}
+
+.intake-form__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--emerald);
+  margin-bottom: var(--space-1);
+}
+
+.intake-form__title {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-1);
+}
+
+.intake-form__sub {
+  font-size: 0.92rem;
+  color: var(--charcoal-dim);
+  line-height: 1.5;
+  max-width: 36rem;
+}
+
+.intake-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+}
+
+@media (max-width: 560px) {
+  .intake-form__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.intake-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.intake-field__label {
+  font-size: 0.82rem;
+  color: var(--charcoal-dim);
+}
+
+.intake-field input,
+.intake-field select {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: #fff;
+  color: var(--charcoal);
+}
+
+.intake-field input:focus,
+.intake-field select:focus {
+  outline: 2px solid var(--emerald);
+  outline-offset: 1px;
+}
+
+.intake-form__submit {
+  background: var(--emerald);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.7rem 1.4rem;
+  transition: opacity 0.15s ease;
+}
+
+.intake-form__submit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.intake-form__submit:not(:disabled):hover {
+  opacity: 0.9;
+}
+
+/* Summary bar shown above chat after submission */
+.intake-summary-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: 0.5rem var(--space-3);
+  background: var(--emerald-soft);
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.85rem;
+}
+
+.intake-summary-bar__text {
+  color: var(--charcoal);
+}
+
+.intake-summary-bar__edit {
+  background: none;
+  border: none;
+  color: var(--emerald);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  flex-shrink: 0;
+}

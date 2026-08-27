@@ -18,6 +18,7 @@ from pydantic import BaseModel
 
 from api.client import chat
 from backend.mock_clients import list_clients, get_client_context
+from backend.intake import format_intake_context
 
 app = FastAPI(title="Financial Planning Platform API")
 
@@ -50,6 +51,7 @@ class ChatRequest(BaseModel):
     message: str
     mode: str = "consumer"       # "consumer" or "advisor"
     client_id: str | None = None  # required for advisor mode
+    intake: dict | None = None    # consumer's intake form data, optional
 
 
 class ChatResponse(BaseModel):
@@ -87,9 +89,11 @@ def post_chat(req: ChatRequest, x_access_code: str | None = Header(default=None)
     messages.append({"role": "user", "content": req.message})
 
     client_context = get_client_context(req.client_id) if req.mode == "advisor" else None
+    intake_context = format_intake_context(req.intake) if req.mode == "consumer" and req.intake else None
+    context = client_context or intake_context
 
     try:
-        updated_messages, tool_calls = chat(messages, mode=req.mode, client_context=client_context)
+        updated_messages, tool_calls = chat(messages, mode=req.mode, context=context)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error calling Claude: {e}")
 

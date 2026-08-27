@@ -58,7 +58,7 @@ CONSUMER_MODE_ADDENDUM = """
 
 You're talking directly with the person whose money this is. Address them directly ("you", \
 "your retirement"), and keep the tone approachable, this is likely not a financial \
-professional, so avoid jargon or explain it when you use it."""
+professional, so avoid jargon or explain it when you use it.{intake_section}"""
 
 ADVISOR_MODE_ADDENDUM = """
 
@@ -75,12 +75,20 @@ Client context for this conversation:
 {client_context}"""
 
 
-def build_system_prompt(mode: str = "consumer", client_context: str | None = None) -> str:
+def build_system_prompt(mode: str = "consumer", context: str | None = None) -> str:
     if mode == "advisor":
         return BASE_SYSTEM_PROMPT + ADVISOR_MODE_ADDENDUM.format(
-            client_context=client_context or "(no client selected yet, ask the advisor which client this is for)"
+            client_context=context or "(no client selected yet, ask the advisor which client this is for)"
         )
-    return BASE_SYSTEM_PROMPT + CONSUMER_MODE_ADDENDUM
+
+    intake_section = ""
+    if context:
+        intake_section = (
+            f"\n\nInformation this person already provided in their intake form:\n{context}\n\n"
+            "Use this directly, don't ask them to repeat it. Only ask for additional details "
+            "genuinely needed to run a calculation."
+        )
+    return BASE_SYSTEM_PROMPT + CONSUMER_MODE_ADDENDUM.format(intake_section=intake_section)
 
 
 def execute_tool_call(tool_name: str, tool_input: dict) -> dict:
@@ -162,17 +170,17 @@ def execute_tool_call(tool_name: str, tool_input: dict) -> dict:
     raise ValueError(f"Unknown tool: {tool_name}")
 
 
-def chat(messages: list, mode: str = "consumer", client_context: str | None = None) -> tuple:
+def chat(messages: list, mode: str = "consumer", context: str | None = None) -> tuple:
     """
     Runs one full turn of the tool-use loop given a message history.
-    mode: "consumer" or "advisor". client_context: plain-text summary of the
-    client's accounts/situation, only used in advisor mode.
+    mode: "consumer" or "advisor". context: plain-text summary, either the
+    consumer's own intake form data, or the advisor's selected client data.
     Returns (updated_messages, tool_calls), where tool_calls is a list of
     {"tool_name": str, "result": dict} for every tool call made this turn,
     in order, so the caller can render structured visuals alongside the text.
     """
     client = anthropic.Anthropic()
-    system_prompt = build_system_prompt(mode=mode, client_context=client_context)
+    system_prompt = build_system_prompt(mode=mode, context=context)
     tool_calls_this_turn = []
 
     while True:
@@ -203,4 +211,3 @@ def chat(messages: list, mode: str = "consumer", client_context: str | None = No
         messages.append({"role": "user", "content": tool_results})
 
     return messages, tool_calls_this_turn
-

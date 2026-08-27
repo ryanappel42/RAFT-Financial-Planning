@@ -7,7 +7,7 @@ function headers() {
   return h;
 }
 
-export async function sendMessage({ sessionId, message, mode, clientId }) {
+export async function sendMessage({ sessionId, message, mode, clientId, intake }) {
   const res = await fetch(`${API_URL}/chat`, {
     method: "POST",
     headers: headers(),
@@ -16,6 +16,7 @@ export async function sendMessage({ sessionId, message, mode, clientId }) {
       message,
       mode,
       client_id: clientId || null,
+      intake: intake || null,
     }),
   });
 
