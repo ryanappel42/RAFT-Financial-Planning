@@ -30,6 +30,24 @@
   color: #A23B3B;
 }
 
+.client-picker__add {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 1px dashed var(--rule-dark);
+  border-radius: 3px;
+  padding: 0.5rem 0.6rem;
+  font-size: 0.85rem;
+  color: var(--brass);
+  margin-bottom: var(--space-2);
+}
+
+.client-picker__add:hover {
+  background: var(--brass-soft);
+  border-style: solid;
+}
+
 .client-picker__item {
   display: block;
   width: 100%;

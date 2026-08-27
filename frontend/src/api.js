@@ -7,7 +7,7 @@ function headers() {
   return h;
 }
 
-export async function sendMessage({ sessionId, message, mode, clientId, intake }) {
+export async function sendMessage({ sessionId, message, mode, client, intake }) {
   const res = await fetch(`${API_URL}/chat`, {
     method: "POST",
     headers: headers(),
@@ -15,7 +15,7 @@ export async function sendMessage({ sessionId, message, mode, clientId, intake }
       session_id: sessionId,
       message,
       mode,
-      client_id: clientId || null,
+      client: client || null,
       intake: intake || null,
     }),
   });
@@ -31,5 +31,5 @@ export async function sendMessage({ sessionId, message, mode, clientId, intake }
 export async function fetchClients() {
   const res = await fetch(`${API_URL}/clients`, { headers: headers() });
   if (!res.ok) throw new Error(`Failed to load clients (${res.status})`);
-  return res.json(); // { client_id: name }
+  return res.json(); // { client_id: fullClientRecord }
 }

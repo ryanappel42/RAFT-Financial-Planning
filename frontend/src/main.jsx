@@ -7,6 +7,7 @@ import './styles/chat.css'
 import './styles/client-picker.css'
 import './styles/results.css'
 import './styles/intake.css'
+import './styles/client-detail.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(

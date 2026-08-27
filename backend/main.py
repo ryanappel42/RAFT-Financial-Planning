@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from api.client import chat
-from backend.mock_clients import list_clients, get_client_context
+from backend.mock_clients import get_all_clients, format_client_context
 from backend.intake import format_intake_context
 
 app = FastAPI(title="Financial Planning Platform API")
@@ -50,7 +50,7 @@ class ChatRequest(BaseModel):
     session_id: str | None = None
     message: str
     mode: str = "consumer"       # "consumer" or "advisor"
-    client_id: str | None = None  # required for advisor mode
+    client: dict | None = None    # full client record, required for advisor mode
     intake: dict | None = None    # consumer's intake form data, optional
 
 
@@ -72,23 +72,23 @@ def health():
 
 @app.get("/clients")
 def get_clients(x_access_code: str | None = Header(default=None)):
-    """Lists mock clients for the advisor-mode client picker."""
+    """Returns the starter client records for the advisor-mode client picker."""
     check_access(x_access_code)
-    return list_clients()
+    return get_all_clients()
 
 
 @app.post("/chat", response_model=ChatResponse)
 def post_chat(req: ChatRequest, x_access_code: str | None = Header(default=None)):
     check_access(x_access_code)
 
-    if req.mode == "advisor" and not req.client_id:
-        raise HTTPException(status_code=400, detail="client_id is required in advisor mode")
+    if req.mode == "advisor" and not req.client:
+        raise HTTPException(status_code=400, detail="client is required in advisor mode")
 
     session_id = req.session_id or str(uuid.uuid4())
     messages = SESSIONS.get(session_id, [])
     messages.append({"role": "user", "content": req.message})
 
-    client_context = get_client_context(req.client_id) if req.mode == "advisor" else None
+    client_context = format_client_context(req.client) if req.mode == "advisor" else None
     intake_context = format_intake_context(req.intake) if req.mode == "consumer" and req.intake else None
     context = client_context or intake_context
 

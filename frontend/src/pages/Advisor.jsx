@@ -1,10 +1,39 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ChatWindow from "../components/ChatWindow";
 import ClientPicker from "../components/ClientPicker";
+import AddClientForm from "../components/AddClientForm";
+import ClientDetailCard from "../components/ClientDetailCard";
+import { fetchClients } from "../api";
 
 export default function Advisor() {
-  const [clientId, setClientId] = useState(null);
+  const [clients, setClients] = useState({});
+  const [selectedId, setSelectedId] = useState(null);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchClients()
+      .then((data) => {
+        const withIds = Object.fromEntries(
+          Object.entries(data).map(([id, c]) => [id, { ...c, id }])
+        );
+        setClients(withIds);
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, []);
+
+  function handleAddClient(newClientData) {
+    const id = `local-${Date.now()}`;
+    const newClient = { ...newClientData, id };
+    setClients((prev) => ({ ...prev, [id]: newClient }));
+    setSelectedId(id);
+    setShowAddForm(false);
+  }
+
+  const selectedClient = selectedId ? clients[selectedId] : null;
 
   return (
     <div className="app-page app-page--advisor">
@@ -15,14 +44,32 @@ export default function Advisor() {
       </header>
 
       <div className="app-body app-body--split">
-        <ClientPicker selectedId={clientId} onSelect={setClientId} />
-        <ChatWindow
-          mode="advisor"
-          clientId={clientId}
-          accentVar="--brass"
-          placeholder="Ask about this client's readiness, drawdown, or drift&hellip;"
-          disabled={!clientId}
+        <ClientPicker
+          clients={clients}
+          selectedId={selectedId}
+          onSelect={(id) => { setSelectedId(id); setShowAddForm(false); }}
+          onAddClick={() => setShowAddForm(true)}
+          loading={loading}
+          error={error}
         />
+
+        {showAddForm ? (
+          <AddClientForm onSubmit={handleAddClient} onCancel={() => setShowAddForm(false)} />
+        ) : selectedClient ? (
+          <div className="advisor-main">
+            <ClientDetailCard client={selectedClient} />
+            <ChatWindow
+              mode="advisor"
+              client={selectedClient}
+              accentVar="--brass"
+              placeholder="Ask about this client's readiness, drawdown, or drift&hellip;"
+            />
+          </div>
+        ) : (
+          <div className="advisor-empty">
+            <p>Select a client, or add a new one, to get started.</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import remarkGfm from "remark-gfm";
 import { sendMessage } from "../api";
 import ToolResultRenderer from "./results/ToolResultRenderer";
 
-export default function ChatWindow({ mode, clientId, intake, accentVar, placeholder, disabled }) {
+export default function ChatWindow({ mode, client, intake, accentVar, placeholder, disabled }) {
   const [messages, setMessages] = useState([]); // { role, text }
   const [input, setInput] = useState("");
   const [sessionId, setSessionId] = useState(null);
@@ -21,7 +21,7 @@ export default function ChatWindow({ mode, clientId, intake, accentVar, placehol
     setMessages([]);
     setSessionId(null);
     setError(null);
-  }, [clientId]);
+  }, [client?.id]);
 
   async function handleSend() {
     const text = input.trim();
@@ -33,7 +33,7 @@ export default function ChatWindow({ mode, clientId, intake, accentVar, placehol
     setError(null);
 
     try {
-      const result = await sendMessage({ sessionId, message: text, mode, clientId, intake });
+      const result = await sendMessage({ sessionId, message: text, mode, client, intake });
       setSessionId(result.session_id);
       setMessages((prev) => [...prev, { role: "assistant", text: result.reply, toolCalls: result.tool_calls }]);
     } catch (err) {
