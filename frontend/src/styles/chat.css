@@ -95,6 +95,52 @@
   margin: 0.7em 0;
 }
 
+.chat-table-scroll {
+  overflow-x: auto;
+  margin: 0.4em 0 0.8em 0;
+}
+
+.chat-entry__text table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.chat-entry__text th {
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--charcoal-dim);
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--rule-dark);
+  white-space: nowrap;
+}
+
+.chat-entry__text td {
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.chat-entry__text td:first-child,
+.chat-entry__text th:first-child {
+  font-family: var(--font-body);
+  white-space: normal;
+}
+
+.chat-entry__text tr:last-child td {
+  border-bottom: none;
+}
+
+.chat-entry__text tbody tr:hover {
+  background: var(--bone-dim);
+}
+
 .chat-entry__text--pending {
   color: var(--charcoal-dim);
   font-style: italic;
