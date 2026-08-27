@@ -19,9 +19,11 @@
 .site-nav__mark {
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  letter-spacing: 0.18em;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   text-decoration: none;
   color: var(--charcoal-dim);
+  white-space: nowrap;
 }
 
 .site-nav--dark .site-nav__mark {

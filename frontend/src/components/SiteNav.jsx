@@ -4,7 +4,7 @@ export default function SiteNav({ dark = false, active, title, right }) {
   return (
     <header className={`site-nav ${dark ? "site-nav--dark" : ""}`}>
       <div className="site-nav__left">
-        <Link to="/" className="site-nav__mark">LEDGER</Link>
+        <Link to="/" className="site-nav__mark">RAFT: Financial Planning</Link>
         {title && <span className="site-nav__title">{title}</span>}
       </div>
 
