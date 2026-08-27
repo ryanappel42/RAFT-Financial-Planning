@@ -1,0 +1,62 @@
+.about-page {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-4) var(--space-3);
+}
+
+.about-content {
+  max-width: 640px;
+  width: 100%;
+}
+
+.about-section__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--emerald);
+  margin-bottom: var(--space-1);
+}
+
+.about-section h2 {
+  font-size: 1.6rem;
+  margin-bottom: var(--space-2);
+}
+
+.about-section p {
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: var(--charcoal);
+  margin-bottom: var(--space-2);
+}
+
+.about-section p strong {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.about-links {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.about-links a {
+  font-size: 0.9rem;
+  color: var(--emerald);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s ease;
+}
+
+.about-links a:hover {
+  opacity: 0.75;
+}
+
+.about-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: var(--space-4) 0;
+}

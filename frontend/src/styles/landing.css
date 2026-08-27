@@ -3,6 +3,12 @@
   background: var(--ink);
   color: var(--bone);
   display: flex;
+  flex-direction: column;
+}
+
+.landing__content-wrap {
+  flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: var(--space-4) var(--space-3);
@@ -11,14 +17,6 @@
 .landing__inner {
   max-width: 640px;
   width: 100%;
-}
-
-.landing__mark {
-  font-family: var(--font-mono);
-  letter-spacing: 0.18em;
-  font-size: 0.75rem;
-  color: var(--brass);
-  margin-bottom: var(--space-4);
 }
 
 .landing__headline {

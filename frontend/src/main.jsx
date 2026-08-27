@@ -8,6 +8,8 @@ import './styles/client-picker.css'
 import './styles/results.css'
 import './styles/intake.css'
 import './styles/client-detail.css'
+import './styles/site-nav.css'
+import './styles/about.css'
 import App from './App.jsx'
 
 createRoot(document.getElementById('root')).render(

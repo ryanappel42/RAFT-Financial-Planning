@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import ChatWindow from "../components/ChatWindow";
 import ClientPicker from "../components/ClientPicker";
 import AddClientForm from "../components/AddClientForm";
 import ClientDetailCard from "../components/ClientDetailCard";
+import SiteNav from "../components/SiteNav";
 import { fetchClients } from "../api";
 
 export default function Advisor() {
@@ -37,11 +37,11 @@ export default function Advisor() {
 
   return (
     <div className="app-page app-page--advisor">
-      <header className="app-header">
-        <Link to="/" className="app-header__mark">LEDGER</Link>
-        <div className="app-header__title">For clients</div>
-        <div className="app-header__powered-by">RAFT, powered by Claude</div>
-      </header>
+      <SiteNav
+        active="advisor"
+        title="For clients"
+        right={<span>RAFT, powered by Claude</span>}
+      />
 
       <div className="app-body app-body--split">
         <ClientPicker
